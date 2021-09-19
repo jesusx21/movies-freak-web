@@ -3,8 +3,7 @@ import Playlists from '../views/PlayLists/Playlists';
 
 function Lists() {
   return (
-    <div className='lists'>
-      {/* <h1>Lists</h1> */}
+    <div id='lists' className='lists'>
       <Playlists />
     </div>
   );

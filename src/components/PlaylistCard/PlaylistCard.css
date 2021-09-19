@@ -1,3 +1,21 @@
-.playlist-card {
-  width: 18rem;
+.card-title {
+  font-size: 30px;
+}
+.card-subtitle {
+  font-size: 26px;
+}
+.card-text {
+  font-size: 18px;
+  color: #4d4d4d;
+}
+
+.menu-header {
+  text-decoration: none;
+  color: #4d4d4d;
+  font-size: 16px;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
