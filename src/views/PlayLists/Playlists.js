@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import PlaylistCard from '../../components/PlaylistCard/PlaylistCard';
 import getLists from './getLists';
 
@@ -19,23 +20,25 @@ function Playlists() {
   }, []);
 
   return (
-    <div className='container'>
-      <div className='row'>
+    <Container>
+      <Row>
         {showCard && cards(lists)}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 }
 
 function cards(playlists) {
   return playlists.map((list) => {
     return (
-      <PlaylistCard
-        name={list.name}
-        description={list.description}
-        type={list.type}
-        numberOfFilms={list.numberOfFilms}
-      />
+      <Col xs={6} md={5}>
+        <PlaylistCard
+          name={list.name}
+          description={list.description}
+          type={list.type}
+          numberOfFilms={list.numberOfFilms}
+        />
+      </Col>
     );
   });
 }
