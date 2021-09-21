@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import PlaylistCard from '../../components/PlaylistCard/PlaylistCard';
-import getLists from './getLists';
+import Playlist from './Playlist';
+import { getLists } from './api';
 
 function Playlists() {
   const [lists, setLists] = useState([]);
@@ -32,7 +32,8 @@ function cards(playlists) {
   return playlists.map((list) => {
     return (
       <Col xs={6} md={5}>
-        <PlaylistCard
+        <Playlist
+          id={list.id}
           name={list.name}
           description={list.description}
           type={list.type}
