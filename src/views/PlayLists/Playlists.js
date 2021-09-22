@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import Playlist from './Playlist';
 import { getLists } from './api';
+import Menu from './Menu';
 
 function Playlists() {
   const [lists, setLists] = useState([]);
@@ -24,6 +25,7 @@ function Playlists() {
       <Row>
         {showCard && cards(lists)}
       </Row>
+      <Menu />
     </Container>
   );
 }
