@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import Playlist from './Playlist';
-import { getLists } from './api';
+import * as api from './api';
 import Menu from './Menu';
 
 function Playlists() {
   const [lists, setLists] = useState([]);
   const [showCard, setShowCard] = useState(true);
 
+  const createList = async (list) => {
+    try {
+      const { data } = await api.createList(list)
+
+      setLists([...lists, data]);
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     (async function() {
       try {
-        const { data: lists } = await getLists();
+        const { data: lists } = await api.getLists();
 
         setLists(lists);
       } catch(error) {
@@ -25,7 +35,7 @@ function Playlists() {
       <Row>
         {showCard && cards(lists)}
       </Row>
-      <Menu />
+      <Menu onCreateList={createList}/>
     </Container>
   );
 }

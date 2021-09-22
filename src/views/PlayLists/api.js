@@ -11,3 +11,9 @@ export async function addFilm(listId, payload) {
 
   return data;
 }
+
+export async function createList(payload) {
+  const { data } = await api.post('lists', payload);
+
+  return data;
+}
