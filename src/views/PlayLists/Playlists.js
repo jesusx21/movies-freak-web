@@ -3,10 +3,11 @@ import { Col, Container, Row } from 'react-bootstrap';
 import Playlist from './Playlist';
 import * as api from './api';
 import Menu from './Menu';
+import { isEmpty } from 'lodash';
 
 function Playlists() {
   const [lists, setLists] = useState([]);
-  const [showCard, setShowCard] = useState(true);
+  const showCard = !isEmpty(lists);
 
   const createList = async (list) => {
     try {
@@ -21,9 +22,9 @@ function Playlists() {
   useEffect(() => {
     (async function() {
       try {
-        const { data: lists } = await api.getLists();
+        const { data } = await api.getLists();
 
-        setLists(lists);
+        setLists(data);
       } catch(error) {
         console.error(error);
       }
