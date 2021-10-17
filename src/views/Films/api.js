@@ -5,3 +5,9 @@ export async function getFilms() {
 
   return data;
 }
+
+export async function getFilmsOnList(listId) {
+  const { data } = await api.get(`lists/${listId}/films`);
+
+  return data;
+}

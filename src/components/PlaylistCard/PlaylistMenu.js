@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'react-bootstrap';
+import { Col, Dropdown } from 'react-bootstrap';
 import AddFilmModal from '../AddFilmModal/AddFilmModal';
 import './PlaylistCard.css'
+import FilmsOnList from '../FilmsOnList';
+import Film from '../../views/Films/Film';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <a
@@ -21,12 +23,26 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 
 function PlaylistMenu(props) {
   const [showAddFilmModal, setShowAddFilmModal] = useState(false);
-  const onHideAddFilmModal = () => setShowAddFilmModal(false);
-  const { onAddFilm } = props;
+  const [showSeeFilmsModal, setShowSeeFilmsModal] = useState(false);
+  const [showSeeRandomFilmsModal, setShowSeeRandomFilmsModal] = useState(false);
+  const [films, setFilms] = useState([]);
+  const { onAddFilm, onSeeFilms } = props;
 
-  const onSelect = (option) => {
+  const onSelect = async (option) => {
     if (option === 'add-film') {
       setShowAddFilmModal(true);
+    }
+    if (option === 'see-films') {
+      const films = await onSeeFilms();
+      setFilms(films);
+
+      setShowSeeFilmsModal(true)
+    }
+    if (option === 'see-random-films') {
+      const films = await onSeeFilms({ random: true, limit: 3 });
+      setFilms(films);
+
+      setShowSeeRandomFilmsModal(true)
     }
   }
 
@@ -50,8 +66,18 @@ function PlaylistMenu(props) {
       </Dropdown>
       <AddFilmModal
         show={showAddFilmModal}
-        onHide={onHideAddFilmModal}
+        onHide={() => setShowAddFilmModal(false)}
         onAddFilm={onAddFilm}
+      />
+      <FilmsOnList
+        show={showSeeFilmsModal}
+        onHide={() => setShowSeeFilmsModal(false)}
+        filmsOnList={films}
+      />
+      <FilmsOnList
+        show={showSeeRandomFilmsModal}
+        onHide={() => setShowSeeRandomFilmsModal(false)}
+        filmsOnList={films}
       />
     </>
   )
@@ -62,7 +88,8 @@ PlaylistMenu.defaultProps = {
 };
 
 PlaylistMenu.propTypes = {
-  onAddFilm: PropTypes.func
+  onAddFilm: PropTypes.func,
+  onSeeFilms: PropTypes.func
 };
 
 export default PlaylistMenu

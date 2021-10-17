@@ -23,6 +23,24 @@ function Playlist(props) {
     }
   }
 
+  const getFilms = (options = {}) => {
+    if (options.random) {
+      return api.getRandomFilms(listId, { limit: options.limit });
+    }
+
+    return api.getFilmsOnList(listId);
+  }
+
+  const onSeeFilms = async (options = {}) => {
+    try {
+      const { data } = await getFilms(options);
+
+      return data;
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
   return (
     <PlaylistCard
       name={name}
@@ -30,6 +48,7 @@ function Playlist(props) {
       type={typeDescription}
       numberOfFilms={numberOfFilms}
       onAddFilm={addFilm}
+      onSeeFilms={onSeeFilms}
     />
   )
 }
