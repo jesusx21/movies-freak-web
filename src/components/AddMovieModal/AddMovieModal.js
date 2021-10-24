@@ -1,10 +1,10 @@
-import React, { useState, createRef } from 'react';
+import React, { createRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Col, Form, Image, Modal, Row } from 'react-bootstrap';
-import './AddFilmModal.css'
-import AddItemModal from '../AddItemModal';
+import { Col, Form, Image, Row } from 'react-bootstrap';
 
-function AddFilmModal(props) {
+import AddItemModal from '../AddItemModal/AddItemModal';
+
+function AddMovieModal(props) {
   const { show, onHide } = props;
 
   const [imdbId, setImdbId] = useState(null);
@@ -15,35 +15,21 @@ function AddFilmModal(props) {
   const imdbIdRef = createRef();
   const noteRef = createRef();
   const posterRef = createRef();
-  const filmNameRef = createRef();
+  const movieNameRef = createRef();
   const ratedRef = createRef();
   const genreRef = createRef();
   const yearRef = createRef();
   const plotRef = createRef();
 
-  const watchPreview = () => setPreview(!preview);
-
-  const OnAddAnotherFilmChange = (input) => {
-    setAddAnotherMovie(input.target.checked);
-  }
-
-  const onImdbIdChange = (input) => {
-    setImdbId(input.target.value);
-  }
-
-  const onNoteChange = (input) => {
-    setNote(input.target.value);
-  }
-
-  const onAddFilm = async () => {
-    const data = await props.onAddFilm({ imdbId, note });
+  const onAddMovie = async () => {
+    const data = await props.onAddMovie({ imdbId, note });
 
     if (addAnotherMovie) {
       imdbIdRef.current.value = '';
       noteRef.current.value = '';
 
       posterRef.current.src = data.film.poster;
-      filmNameRef.current.value = data.film.title || data.film.name;
+      movieNameRef.current.value = data.film.title || data.film.name;
       ratedRef.current.value = data.film.rated;
       genreRef.current.value = data.film.genre;
       yearRef.current.value = data.film.year;
@@ -59,12 +45,17 @@ function AddFilmModal(props) {
       onHide={onHide}
       createLabel='Agregar'
       title='Agregar Película'
-      onCreate={onAddFilm}
+      onCreate={onAddMovie}
     >
       <Form>
         <Form.Group className='mb-3' controlId='formImdbId'>
           <Form.Label>IMDB Id</Form.Label>
-          <Form.Control ref={imdbIdRef} type='text' placeholder='tt12749596' onChange={onImdbIdChange} />
+          <Form.Control
+            ref={imdbIdRef}
+            type='text'
+            placeholder='tt12749596'
+            onChange={(input) => setImdbId(input.target.value)}
+          />
           <Form.Text className='text-muted'>
             Usaremos el id de IMDB para buscar la película y agregarla a tu lista
           </Form.Text>
@@ -72,11 +63,21 @@ function AddFilmModal(props) {
 
         <Form.Group className='mb-3' controlId='formNote'>
           <Form.Label>Nota</Form.Label>
-          <Form.Control as='textarea' ref={noteRef} rows={2} onChange={onNoteChange} />
+          <Form.Control
+            as='textarea'
+            ref={noteRef}
+            rows={2}
+            onChange={(input) => setNote(input.target.value)}
+          />
         </Form.Group>
 
         <Form.Group className='mb-3' controlId='preview'>
-          <Form.Check type='checkbox' default={preview} label='Preview' onClick={watchPreview} />
+          <Form.Check
+            type='checkbox'
+            default={preview}
+            label='Preview'
+            onClick={() => setPreview(!preview)}
+          />
         </Form.Group>
 
         <Form hidden={!preview}>
@@ -86,7 +87,7 @@ function AddFilmModal(props) {
             </Col>
             <Form.Group as={Col}>
               <Form.Label className='text-muted'>Nombre:</Form.Label>
-              <Form.Control ref={filmNameRef} type='text' disabled />
+              <Form.Control ref={movieNameRef} type='text' disabled />
             </Form.Group>
           </Row>
           <Row>
@@ -112,23 +113,26 @@ function AddFilmModal(props) {
         </Form>
 
         <Form.Group className='mb-3' controlId='formCheckbox'>
-          <Form.Check type='checkbox' label='Agregar otra película' onChange={OnAddAnotherFilmChange}/>
+          <Form.Check
+          type='checkbox'
+          label='Agregar otra película'
+          onChange={(input) => setAddAnotherMovie(input.target.checked)}/>
         </Form.Group>
       </Form>
     </AddItemModal>
-  );
+  )
 }
 
-AddFilmModal.defaultProps = {
+AddMovieModal.defaultProps = {
   show: false,
   onHide: () => console.log('Hidden'),
-  onAddFilm: (film) => console.info(film)
+  onAddMovie: (movie) => console.info(movie)
 };
 
-AddFilmModal.propTypes = {
+AddMovieModal.propTypes = {
   show: PropTypes.bool,
   onHide: PropTypes.func,
-  onAddFilm: PropTypes.func
+  onAddMovie: PropTypes.func
 };
 
-export default AddFilmModal
+export default AddMovieModal

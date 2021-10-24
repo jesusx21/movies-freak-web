@@ -1,18 +1,18 @@
 .card-title {
-  font-size: 30px;
+  font-size: 25px;
 }
 .card-subtitle {
-  font-size: 26px;
+  font-size: 20px;
 }
 .card-text {
-  font-size: 18px;
+  font-size: 14px;
   color: #4d4d4d;
 }
 
 .options {
   text-decoration: none;
   color: #4d4d4d;
-  font-size: 14px;
+  font-size: 10px;
   width: 95%;
   height: 100%;
   display: flex;
@@ -22,7 +22,7 @@
 
 .menu-header {
   color: #4d4d4d;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: end;
@@ -30,7 +30,7 @@
 
 .options-items {
   color: #4d4d4d;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: start;

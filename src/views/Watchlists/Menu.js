@@ -2,23 +2,20 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as BsIcon from 'react-icons/bs';
 import * as IoIcon from 'react-icons/io';
-import {
-  FloatingMenu,
-  MainButton,
-  ChildButton,
-} from 'react-floating-button-menu';
+import { ChildButton, FloatingMenu, MainButton } from 'react-floating-button-menu';
+
 import './Menu.css';
-import AddListModal from '../../components/AddListModal/AddListModal';
+import AddWatchlistModal from '../../components/AddWatchlistModal/AddWatchlistModal';
 
 function Menu(props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showAddList, setShowAddList] = useState(false);
+  const[isOpen, setIsOpen] = useState(false);
+  const [showAddWatchlist, setShowAddWatchlist] = useState(false);
 
   return (
     <>
       <FloatingMenu
         slideSpeed={500}
-        direction="up"
+        direction='up'
         spacing={8}
         isOpen={isOpen}
         className='floating-menu'
@@ -31,23 +28,23 @@ function Menu(props) {
         />
         <ChildButton
           icon={<IoIcon.IoMdCreate />}
-          label='CrearLista'
-          onClick={() => setShowAddList(true)}
+          label='Crear Lista'
+          onClick={() => setShowAddWatchlist(true)}
           size={40}
         />
       </FloatingMenu>
 
-      <AddListModal
-        show={showAddList}
-        onCreateList={props.onCreateList}
-        onHide={() => setShowAddList(!showAddList)}
+      <AddWatchlistModal
+        show={showAddWatchlist}
+        onCreateWatchlist={props.onCreateWatchlist}
+        onHide={() => setShowAddWatchlist(!showAddWatchlist)}
       />
     </>
   )
 }
 
 Menu.propTypes = {
-  onCreateList: PropTypes.func
+  onCreateWatchlist: PropTypes.func
 };
 
 export default Menu
