@@ -8,5 +8,6 @@ function Movies() {
     </div>
   );
 }
+console.log("Hola!");
 
 export default Movies;

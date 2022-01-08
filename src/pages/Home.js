@@ -8,4 +8,6 @@ function Home() {
   );
 }
 
+console.log("Hola!");
+
 export default Home;
