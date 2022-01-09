@@ -8,6 +8,6 @@ function Lists() {
     </div>
   );
 }
-console.log("Hola!");
+console.log("Hola! ");
 
 export default Lists;
