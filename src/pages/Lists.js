@@ -9,6 +9,6 @@ function Lists() {
   );
 }
 console.log("Hola! ");
-alert("This is how I do it!");
+alert("This is how I do it! hehehe");
 
 export default Lists;
