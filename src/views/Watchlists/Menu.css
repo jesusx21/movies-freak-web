@@ -1,8 +1,0 @@
-.floating-menu {
-	position: absolute;
-	right: 8px;
-	bottom: 50px;
-	height: 42px;
-	text-align: right;
-	transition: height 250ms ease-in-out;
-}
