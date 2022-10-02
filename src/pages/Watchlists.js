@@ -1,8 +1,12 @@
 import React from 'react';
+import Lists from '../views/Watchlists/Watchlists';
+import '../style.css';
 
 function Watchlists() {
   return (
-    <h1>Watchlists</h1>
+    <div id='watchlists-page' className='watchlists'>
+      <Lists />
+    </div>
   )
 }
 
