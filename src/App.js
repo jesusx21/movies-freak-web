@@ -1,20 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
-import { Navbar } from './components';
-import { Home, Movies, Watchlists } from './pages';
+import Home from './pages/Home';
+import Films from './pages/Films';
+import Navbar from './components/Navbar/Navbar';
+import Watchlist from './pages/Watchlist';
+import Watchlists from './pages/Watchlists';
 
 function App() {
   return (
     <>
       <Router>
         <Navbar />
+        <ToastContainer />
 
-        <Switch>
-          <Route path='/' exact component={Home} />
-          <Route path='/watchlists' exact component={Watchlists} />
-          <Route path='/movies' exact component={Movies} />
-        </Switch>
+        <Routes>
+          <Route path='/' exact element={<Home />} />
+          <Route path='/watchlists' exact element={<Watchlists />} />
+          <Route path='/watchlists/:id' exact element={<Watchlist />} />
+          <Route path='/films' exact element={<Films />} />
+        </Routes>
       </Router>
     </>
   )

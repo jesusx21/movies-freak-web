@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import WatchlistCardMenu from './WatchlistCardMenu';
 import { Card } from 'react-bootstrap';
 import './WatchlistCard.css'
 
 function WatchlistCard(props) {
-  const { name, type, numberOfFilms } = props;
+  const { id, name, type, numberOfFilms } = props;
 
   const description = props.description || 'Lista sin desripción';
 
@@ -19,15 +19,10 @@ function WatchlistCard(props) {
 
   return (
     <Card >
-      <WatchlistCardMenu
-        watchlistName={name}
-        onAddMovie={props.onAddMovie}
-        onSeeMovies={props.onSeeMovies}
-        onMarkMovieAsWatched={props.onMarkMovieAsWatched}
-      />
-
       <Card.Body>
-        <Card.Title className='card-title'>{name}</Card.Title>
+        <Card.Title className='card-title'>
+          <Link to={`/watchlists/${id}`}>{name}</Link>
+        </Card.Title>
         <Card.Subtitle className='card-subtitle'>{typeDescription}</Card.Subtitle>
         <Card.Text className='card-text'>
           {`-> ${description}`}
@@ -46,6 +41,7 @@ WatchlistCard.defaultProps = {
 };
 
 WatchlistCard.propTypes = {
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string,
   type: PropTypes.string.isRequired,

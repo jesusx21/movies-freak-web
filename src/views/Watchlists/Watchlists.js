@@ -3,9 +3,9 @@ import SearchField from 'react-search-field';
 import { Col, Container, Row } from 'react-bootstrap';
 import { chunk, isEmpty } from 'lodash';
 
-import * as api from './api';
-import { WatchlistCard } from '../../components';
 import Menu from './Menu';
+import WatchlistCard from '../../components/WatchlistCard/WatchlistCard';
+import * as api from './api';
 
 function Watchlists() {
   const [watchlists, setWatchLists] = useState([]);

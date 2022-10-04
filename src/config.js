@@ -1,5 +1,5 @@
 const config = {
-  serverHost: 'http://127.0.0.1',
+  serverHost: 'localhost',
   serverPort: '8000'
 };
 

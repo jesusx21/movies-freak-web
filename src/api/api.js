@@ -4,7 +4,7 @@ import config from '../config';
 
 class Api {
   constructor(host, port) {
-    const baseURL = `${host}:${port}/movies-freak/api/v1`;
+    const baseURL = `http://${host}:${port}/movies-freak/api/v1`;
 
     this._request = axios.create({
       baseURL,

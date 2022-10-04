@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Movies() {
+function Films() {
   return (
-    <div className='movies'>
+    <div className='films'>
       <h1>Watchlists</h1>
     </div>
   );
 }
 
-export default Movies;
+export default Films;
