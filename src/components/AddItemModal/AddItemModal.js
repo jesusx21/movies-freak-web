@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
+import './AddItemModal.css';
 
 function AddItemModal(props) {
   const { closeLabel, createLabel, children, show, title, onHide, onCreate } = props;
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal animation={true} show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

@@ -1,46 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { isEmpty } from 'lodash';
 import { useParams } from 'react-router-dom';
 
-import AddFilmModal from '../../components/AddMovieModal/AddMovieModal';
+import MoviesFreakPagination from '../../components/Pagination/Pagination';
 import * as api from './api';
-import { notifyError } from '../../toast';
-import './Watchlist.css';
-import MovieCard from '../../components/MovieCard/MovieCard';
-import AddFilmsFromWashlistModal from '../../components/AddFromWashlistModal/AddFilmsFromWashlistModal';
-import MoviesOnWatchlist from '../../components/MovieOnWatchlist/MoviesOnWatchlist';
-import { isEmpty } from 'lodash';
+import { notifyError, notifySuccess } from '../../toast';
+import {
+  AddFilmModal,
+  AddFilmsFromWatchListModal,
+  FilmCard,
+  FilmsOnWatchList,
+  Search
+} from '../../components';
+import './WatchList.css';
 
 
-function Watchlist() {
+function WatchList() {
   const params = useParams();
-  const [watchlist, setWatchList] = useState({})
+  const [watchList, setWatchList] = useState({})
+  const [query, setQuery] = useState('');
   const [films, setFilms] = useState([]);
+  const [totalFilms, setTotalFilms] = useState([]);
   const [randomFilms, setRandomFilms] = useState([]);
   const [showAddFilmModal, setShowAddFilmModal] = useState(false);
-  const [showAddFromWatchlistModal, setShowAddFromWatchlistModal] = useState(false);
-  const [showSeeRandomMoviesModal, setShowSeeRandomMoviessModal] = useState(false);
+  const [showAddFromWatchListModal, setShowAddFromWatchListModal] = useState(false);
+  const [showSeeRandomFilmsModal, setShowSeeRandomFilmssModal] = useState(false);
 
-  const fetchWatchlist = async () => {
+  const onSearchChange = async (value) => {
+    await fetchFilms({ q: value });
+    setQuery(value);
+  }
+
+  const fetchWatchList = async () => {
     try {
-      const { data } = await api.getWatchlistById(params.id);
+      const { data } = await api.getWatchListById(params.id);
 
-      setWatchList(data)
+      setWatchList(data);
     } catch (error) {
-      const { status } = error.response;
+      const {data } = error.response;
+
+      if (data.code === 'LIST_NOT_FOUND') {
+        return notifyError('Watch list was not found.')
+      }
 
       notifyError()
     }
   };
 
-  const fetchFilms = async () => {
+  const fetchFilms = async (query) => {
     try {
-      const { data } = await api.getFilms(params.id);
+      const { items, totalItems } = await api.getFilms(params.id, query);
 
-      setFilms(data)
+      setFilms(items)
+      setTotalFilms(totalItems)
     } catch (error) {
       notifyError();
     }
+  };
+
+  const onPageClick = async (pagination) => {
+    await fetchFilms({ q: query, ...pagination })
   };
 
   const fetchRandomFilms = async () => {
@@ -57,30 +77,41 @@ function Watchlist() {
     try {
       const { data } = await api.addFilm(params.id, film);
 
+      setFilms([ data, ...films ])
+
+      notifySuccess('Film added succesfully');
       return data;
     } catch(error) {
-      console.error(error);
-      notifyError();
-    }
-
-    await fetchFilms();
+      notifyError('Error adding the film');
+    };
   }
 
-  const onAddFromWatchlist = async (watchlistId) => {
-    if (isEmpty(watchlistId)) {
+  const onIMDBFetch = async (value) => {
+    const query = { name: value };
+
+    try {
+      const { data } = await api.fetchFilmOnIMDB(query);
+
+      return data;
+    } catch(error) {
+      console.info(error?.response?.data);
+      return [];
+    };
+  }
+
+  const onAddFromWatchList = async (watchListId) => {
+    if (isEmpty(watchListId)) {
       return notifyError('Id is invalid')
     }
 
     try {
-      const { data } = await api.addFilmsFromWatchlist(params.id, watchlistId);
+      const { data } = await api.addFilmsFromWatchList(params.id, watchListId);
 
+      setFilms([ ...films, ...data ])
       return data;
     } catch(error) {
-      console.error(error);
       notifyError();
     }
-
-    await fetchFilms();
   }
 
   const markFilmAsWatched = async (filmId, watched) => {
@@ -91,40 +122,41 @@ function Watchlist() {
 
       return data;
     } catch(error) {
-      console.error(error);
       notifyError();
     }
   }
 
   const onSeeRandomFilmsClick = async () => {
     await fetchRandomFilms();
-    setShowSeeRandomMoviessModal(true);
+    setShowSeeRandomFilmssModal(true);
   };
 
   useEffect(() => {
-    fetchWatchlist();
+    fetchWatchList();
     fetchFilms();
-  }, []);
+  });
 
   return (
     <>
       <div>
-        <div className='detail-title'>{watchlist.name}</div>
-        <div className='detail-subtitle'>{watchlist.description}</div>
+        <div className='detail-title'>{watchList.name}</div>
+        <div className='detail-subtitle'>{watchList.description}</div>
         <div className='films-menu'>
           <Button variant='light' onClick={() => setShowAddFilmModal(true)}>Add Film</Button>{' '}
-          <Button variant='light' onClick={() => setShowAddFromWatchlistModal(true)}>
-            Add Film From Watchlist
+          <Button variant='light' onClick={() => setShowAddFromWatchListModal(true)}>
+            Add Film From Watch List
           </Button>{' '}
           <Button variant='light' onClick={onSeeRandomFilmsClick}>See Random Films</Button>{' '}
           <Button variant='light' disabled >Mark Films as Watched</Button>{' '}
           <Button variant='light' disabled >Mark Films as not Watched</Button>{' '}
+
+          <Search onChange={onSearchChange} placeholder='Search your film' />
         </div>
         <div className='films-cards'>
           {
-            films.map(({ film }) => {
+            films.map(({ film, watched }) => {
               return (
-                <MovieCard
+                <FilmCard
                   id={film.id}
                   name={film.name}
                   poster={film.poster}
@@ -134,8 +166,8 @@ function Watchlist() {
                   plot={film.plot}
                   rating={film.rating}
                   locations={film.locations}
-                  watched={film.watched}
-                  onMarkMovieAsWatched={markFilmAsWatched}
+                  watched={watched}
+                  onMarkFilmAsWatched={markFilmAsWatched}
                 />
               )
             })
@@ -146,22 +178,24 @@ function Watchlist() {
       <AddFilmModal
         show={showAddFilmModal}
         onHide={() => setShowAddFilmModal(false)}
-        onAddMovie={onAddFilm}
+        onIMDBFetch={onIMDBFetch}
+        onAddFilm={onAddFilm}
       />
-      <AddFilmsFromWashlistModal
-        show={showAddFromWatchlistModal}
-        onHide={() => setShowAddFromWatchlistModal(false)}
-        onAddFromWatchlist={onAddFromWatchlist}
+      <AddFilmsFromWatchListModal
+        show={showAddFromWatchListModal}
+        onHide={() => setShowAddFromWatchListModal(false)}
+        onAddFromWatchList={onAddFromWatchList}
       />
-      <MoviesOnWatchlist
-        watchlistName={watchlist.name}
-        show={showSeeRandomMoviesModal}
-        onHide={() => setShowSeeRandomMoviessModal(false)}
-        moviesOnWatchlist={randomFilms}
-        onMarkMovieAsWatched={markFilmAsWatched}
+      <FilmsOnWatchList
+        watchListName={watchList.name}
+        show={showSeeRandomFilmsModal}
+        onHide={() => setShowSeeRandomFilmssModal(false)}
+        filmsOnWatchList={randomFilms}
+        onMarkFilmAsWatched={markFilmAsWatched}
       />
+      <MoviesFreakPagination onPageClick={onPageClick} totalItems={totalFilms} />
     </>
   )
 }
 
-export default Watchlist;
+export default WatchList;

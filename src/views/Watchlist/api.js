@@ -1,43 +1,49 @@
 import api from '../../api';
 
-export async function getWatchlistById(watchlistId) {
-  const { data } = await api.get(`watchlists/${watchlistId}`);
+export async function getWatchListById(watchListId) {
+  const { data } = await api.get(`watchLists/${watchListId}`);
 
   return data;
 }
 
-export async function addFilm(watchlistId, payload) {
-  const { data } = await api.post(`watchlists/${watchlistId}/films`, payload);
+export async function addFilm(watchListId, payload) {
+  const { data } = await api.post(`watchLists/${watchListId}/films`, payload);
 
   return data;
 }
 
-export async function addFilmsFromWatchlist(watchlistTargetId, watchlistSourceId) {
-  const { data } = await api.post(`watchlists/${watchlistTargetId}/films-from-lists/${watchlistSourceId}`);
+export async function addFilmsFromWatchList(watchListTargetId, watchListSourceId) {
+  const { data } = await api.post(`watchLists/${watchListTargetId}/films-from-lists/${watchListSourceId}`);
 
   return data;
 }
 
-export async function getFilms(watchlistId, params) {
-  const { data } = await api.get(`watchlists/${watchlistId}/films`, params);
+export async function getFilms(watchListId, query) {
+  const { data } = await api.get(`watchLists/${watchListId}/films`, query);
 
   return data;
 }
 
-export async function getRandomFilms(watchlistId, params) {
-  const { data } = await api.get(`watchlists/${watchlistId}/films/random`, params);
+export async function getRandomFilms(watchListId, params) {
+  const { data } = await api.get(`watchLists/${watchListId}/films/random`, params);
 
   return data;
 }
 
-export async function markFilmAsWatched(watchlistId, filmId) {
-  const { data } = await api.post(`watchlists/${watchlistId}/films/${filmId}/mark-as-watched`);
+export async function markFilmAsWatched(watchListId, filmId) {
+  const { data } = await api.post(`watchLists/${watchListId}/films/${filmId}/mark-as-watched`);
 
   return data;
 }
 
-export async function markFilmAsNotWatched(watchlistId, filmId) {
-  const { data } = await api.post(`watchlists/${watchlistId}/films/${filmId}/mark-as-not-watched`);
+export async function markFilmAsNotWatched(watchListId, filmId) {
+  const { data } = await api.post(`watchLists/${watchListId}/films/${filmId}/mark-as-not-watched`);
+
+  return data;
+}
+
+export async function fetchFilmOnIMDB(query) {
+  const { data } = await api.get('films/imdb', query);
 
   return data;
 }

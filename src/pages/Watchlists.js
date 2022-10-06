@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Watchlists as WatchlistsCards } from '../views';
+import { WatchLists as WatchListsCards } from '../views';
 
-function Watchlists() {
+function WatchLists() {
   return (
-    <div id='watchlists' className='watchlists'>
-      <WatchlistsCards />
+    <div id='watch-lists' className='watch-lists'>
+      <WatchListsCards />
     </div>
   );
 }
 
-export default Watchlists;
+export default WatchLists;

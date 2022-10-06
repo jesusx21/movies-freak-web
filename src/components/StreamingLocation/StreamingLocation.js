@@ -6,15 +6,15 @@ function StreamingLocation(props) {
 
   return (
     <a href={url}>
-      <img src={icon} />
+      <img src={icon} alt={name} />
     </a>
   )
 }
 
-Location.propTypes = {
+StreamingLocation.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.string,
   url: PropTypes.string
 };
 
-export default StreamingLocation
+export default StreamingLocation;

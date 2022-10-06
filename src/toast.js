@@ -16,3 +16,7 @@ export function notifyError(message) {
   message ||= 'Error getting response from server';
   toast.error(message, toastParams);
 }
+
+export function notifySuccess(message) {
+  toast.success(message, toastParams);
+}

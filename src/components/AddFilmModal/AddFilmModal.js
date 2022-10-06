@@ -1,35 +1,40 @@
 import React, { createRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Form, Image, Row } from 'react-bootstrap';
+import { Card, Col, Collapse, Form, Image, Row } from 'react-bootstrap';
 
 import AddItemModal from '../AddItemModal/AddItemModal';
+import './AddFilmModal.css';
+import { isEmpty } from 'lodash';
 
-function AddMovieModal(props) {
-  const { show, onHide } = props;
+function AddFilmModal(props) {
+  const { show, onHide, onIMDBFetch } = props;
 
+  const [open, setOpen] = useState(false);
   const [imdbId, setImdbId] = useState(null);
   const [note, setNote] = useState(null);
   const [preview, setPreview] = useState(false);
-  const [addAnotherMovie, setAddAnotherMovie] = useState(false);
+  const [addAnotherFilm, setAddAnotherFilm] = useState(false);
+  const [imdbFilms, setIMDBFilms] = useState([]);
 
   const imdbIdRef = createRef();
+  const previewRef = createRef();
   const noteRef = createRef();
   const posterRef = createRef();
-  const movieNameRef = createRef();
+  const filmNameRef = createRef();
   const ratedRef = createRef();
   const genreRef = createRef();
   const yearRef = createRef();
   const plotRef = createRef();
 
-  const onAddMovie = async () => {
-    const data = await props.onAddMovie({ imdbId, note });
+  const onAddFilm = async () => {
+    const data = await props.onAddFilm({ imdbId, note });
 
-    if (addAnotherMovie) {
+    if (addAnotherFilm) {
       imdbIdRef.current.value = '';
       noteRef.current.value = '';
 
       posterRef.current.src = data.film.poster;
-      movieNameRef.current.value = data.film.title || data.film.name;
+      filmNameRef.current.value = data.film.title || data.film.name;
       ratedRef.current.value = data.film.rated;
       genreRef.current.value = data.film.genre;
       yearRef.current.value = data.film.year;
@@ -39,13 +44,38 @@ function AddMovieModal(props) {
     }
   }
 
+  const fetchFilmOnIMDB = async () => {
+    const { value } = imdbIdRef.current;
+    const data = await onIMDBFetch(value);
+
+    if (!isEmpty(data)) {
+      setIMDBFilms(data);
+    } else {
+      setImdbId(value);
+    }
+  }
+
+  const onSelectIMDBFilm = (imdbFilm) => {
+    setImdbId(imdbFilm.imdbId);
+    setOpen(false);
+    setPreview(true);
+
+    previewRef.current.src = true;
+    posterRef.current.src = imdbFilm.poster;
+    filmNameRef.current.value = imdbFilm.title;
+    ratedRef.current.value = imdbFilm.rated;
+    genreRef.current.value = imdbFilm.genre;
+    yearRef.current.value = imdbFilm.year;
+    plotRef.current.value = imdbFilm.plot;
+  }
+
   return (
     <AddItemModal
       show={show}
       onHide={onHide}
       createLabel='Agregar'
       title='Agregar Película'
-      onCreate={onAddMovie}
+      onCreate={onAddFilm}
     >
       <Form>
         <Form.Group className='mb-3' controlId='formImdbId'>
@@ -54,8 +84,32 @@ function AddMovieModal(props) {
             ref={imdbIdRef}
             type='text'
             placeholder='tt12749596'
-            onChange={(input) => setImdbId(input.target.value)}
+            onChange={fetchFilmOnIMDB}
+            onClick={() => setOpen(!open)}
           />
+
+          <div hidden={!open} style={{ minHeight: '150px' }}>
+            <Collapse in={open} dimension='width'>
+              <Card body style={{ width: '400px' }}>
+                <ul className='list-unstyled'>
+                  {
+                    imdbFilms.map((imdbFilm) => {
+                      return (
+                        <li>
+                          <div
+                            className='imdb-film'
+                            onClick={() => onSelectIMDBFilm(imdbFilm)}
+                            >
+                              {imdbFilm.title}
+                            </div>
+                        </li>
+                      );
+                    })
+                  }
+                </ul>
+              </Card>
+            </Collapse>
+          </div>
           <Form.Text className='text-muted'>
             Usaremos el id de IMDB para buscar la película y agregarla a tu lista
           </Form.Text>
@@ -75,6 +129,7 @@ function AddMovieModal(props) {
           <Form.Check
             type='checkbox'
             default={preview}
+            ref={previewRef}
             label='Preview'
             onClick={() => setPreview(!preview)}
           />
@@ -87,7 +142,7 @@ function AddMovieModal(props) {
             </Col>
             <Form.Group as={Col}>
               <Form.Label className='text-muted'>Nombre:</Form.Label>
-              <Form.Control ref={movieNameRef} type='text' disabled />
+              <Form.Control ref={filmNameRef} type='text' disabled />
             </Form.Group>
           </Row>
           <Row>
@@ -116,23 +171,23 @@ function AddMovieModal(props) {
           <Form.Check
           type='checkbox'
           label='Agregar otra película'
-          onChange={(input) => setAddAnotherMovie(input.target.checked)}/>
+          onChange={(input) => setAddAnotherFilm(input.target.checked)}/>
         </Form.Group>
       </Form>
     </AddItemModal>
   )
 }
 
-AddMovieModal.defaultProps = {
+AddFilmModal.defaultProps = {
   show: false,
   onHide: () => console.log('Hidden'),
-  onAddMovie: (movie) => console.info(movie)
+  onAddFilm: (film) => console.info(film)
 };
 
-AddMovieModal.propTypes = {
+AddFilmModal.propTypes = {
   show: PropTypes.bool,
   onHide: PropTypes.func,
-  onAddMovie: PropTypes.func
+  onAddFilm: PropTypes.func
 };
 
-export default AddMovieModal
+export default AddFilmModal

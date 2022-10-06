@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ function Navbar() {
         {
           SidebarData.map((item, index) => {
             return (
-              <CustomLink to={item.path} className={item.className} key={index}>
+              <CustomLink key={index} index={index} to={item.path} className={item.className}>
                 {item.title}
               </CustomLink>
             );
@@ -25,17 +25,17 @@ function Navbar() {
 }
 
 function CustomLink(props) {
-  const { to, children, key } = props;
+  const { to, children, index } = props;
   const resolvedPath = useResolvedPath(to);
   const currentPath = useMatch({ path: resolvedPath.pathname, end: true });
 
   const classNames = classnames(
     props.className,
-    { active: to === currentPath }
+    { active: to === currentPath?.pathnameBase }
   );
 
   return (
-    <li className={classNames} key={key}>
+    <li className={classNames} key={index}>
       <Link to={to}>
         {children}
       </Link>

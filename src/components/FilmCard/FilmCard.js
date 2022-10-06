@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 
 import StreamingLocation from '../StreamingLocation/StreamingLocation';
-import './MovieCard.css'
+import './FilmCard.css'
+import { isNil } from 'lodash';
 
-function MovieCard(props) {
+function FilmCard(props) {
   const { id, poster, year, genre, plot, rating } = props;
   const rated = `Calificación: ${props.rated || 'No Disponible'}`;
-  const [watched, setWatched] = useState(props.watched)
+  const [watched, setWatched] = useState(false)
 
   let title = props.name;
 
@@ -17,10 +18,14 @@ function MovieCard(props) {
   }
 
   const onMarkAsWatched = async () => {
-    await props.onMarkMovieAsWatched(id, watched);
+    await props.onMarkFilmAsWatched(id, watched);
 
     setWatched(!watched);
   }
+
+  useEffect(() => {
+    setWatched(props.watched);
+  }, [props.watched]);
 
   const locations = props.locations.map((location) => (
     <Col>
@@ -33,7 +38,7 @@ function MovieCard(props) {
   ));
 
   return (
-    <Card className='movie-card' bg={watched ? 'secondary' : 'light'}>
+    <Card className='film-card' bg={watched ? 'secondary' : 'light'}>
       <Card.Header>
         <Row>
           <Col><Card.Img className='poster' variant='top' src={`${poster}/50px90`} /></Col>
@@ -55,14 +60,14 @@ function MovieCard(props) {
       <Card.Body>
         <Card.Text>{plot}</Card.Text>
       </Card.Body>
-      <Button border='dark' variant='outline-dark' onClick={onMarkAsWatched}>
+      <Button hidden={isNil(watched)} border='dark' variant='outline-dark' onClick={onMarkAsWatched}>
        {watched ? 'Marcar como no vista' : 'Marcar como vista'}
       </Button>
     </Card>
   )
 }
 
-MovieCard.propTypes = {
+FilmCard.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string.isRequired,
   poster: PropTypes.string,
@@ -73,7 +78,7 @@ MovieCard.propTypes = {
   rating: PropTypes.string,
   locations: PropTypes.array,
   watched: PropTypes.bool,
-  onMarkMovieAsWatched: PropTypes.func
+  onMarkFilmAsWatched: PropTypes.func
 };
 
-export default MovieCard
+export default FilmCard

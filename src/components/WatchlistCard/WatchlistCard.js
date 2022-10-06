@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { Card } from 'react-bootstrap';
-import './WatchlistCard.css'
+import './WatchListCard.css'
 
-function WatchlistCard(props) {
-  const { id, name, type, numberOfFilms } = props;
+function WatchListCard(props) {
+  const { id, index, name, type, numberOfFilms } = props;
 
   const description = props.description || 'Lista sin desripción';
 
@@ -18,10 +18,10 @@ function WatchlistCard(props) {
   const typeDescription = mapType[type] || 'Lista para ver películas';
 
   return (
-    <Card >
+    <Card key={index}>
       <Card.Body>
         <Card.Title className='card-title'>
-          <Link to={`/watchlists/${id}`}>{name}</Link>
+          <Link to={`/watch-lists/${id}`}>{name}</Link>
         </Card.Title>
         <Card.Subtitle className='card-subtitle'>{typeDescription}</Card.Subtitle>
         <Card.Text className='card-text'>
@@ -34,21 +34,18 @@ function WatchlistCard(props) {
   )
 }
 
-WatchlistCard.defaultProps = {
+WatchListCard.defaultProps = {
   description: '',
-  numberOfFilms: 0,
-  onAddMovie: (film) => console.info(film),
+  numberOfFilms: 0
 };
 
-WatchlistCard.propTypes = {
+WatchListCard.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string,
   type: PropTypes.string.isRequired,
   numberOfFilms: PropTypes.number,
-  onAddMovie: PropTypes.func,
-  onSeeMovies: PropTypes.func,
-  onMarkMovieAsWatched: PropTypes.func
+  index: PropTypes.number
 };
 
-export default WatchlistCard
+export default WatchListCard

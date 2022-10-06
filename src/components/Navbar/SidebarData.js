@@ -5,8 +5,8 @@ export const SidebarData = [
     className: 'nav-text'
   },
   {
-    title: 'Watchlists',
-    path: '/watchlists',
+    title: 'Watch Lists',
+    path: '/watch-lists',
     className: 'nav-text'
   },
   {

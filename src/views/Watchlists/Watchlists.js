@@ -1,157 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import SearchField from 'react-search-field';
-import { Col, Container, Row } from 'react-bootstrap';
-import { chunk, isEmpty } from 'lodash';
 
-import Menu from './Menu';
-import WatchlistCard from '../../components/WatchlistCard/WatchlistCard';
 import * as api from './api';
+import { AddWatchListModal, Search, WatchListCard } from '../../components';
+import { notifyError } from '../../toast';
+import './WatchLists.css';
 
-function Watchlists() {
-  const [watchlists, setWatchLists] = useState([]);
-  const showCard = !isEmpty(watchlists);
+function WatchLists() {
+  const [watchLists, setWatchLists] = useState([]);
+  const [showAddWatchList, setShowAddWatchList] = useState(false);
 
-  const createWatchlist = async (watchlist) => {
+  const createWatchList = async (watchList) => {
     try {
-      const { data } = await api.createWatchlist(watchlist)
+      const { data } = await api.createWatchList(watchList)
 
-      setWatchLists([...watchlists, data]);
+      setWatchLists([...watchLists, data]);
     } catch(error) {
-      console.error(error);
+      notifyError('Error creating watch list');
     }
   }
 
-  const fetchWatchlists = async (query = {}) => {
+  const fetchWatchLists = async (query = {}) => {
     try {
-      const { data: items } = await api.getWatchlists(query);
+      const { data: items } = await api.getWatchLists(query);
 
       setWatchLists(items)
     } catch (error) {
-      console.log(error);
+      notifyError('Error fetching watch lists');
     }
   };
 
   useEffect(() => {
-    fetchWatchlists();
+    fetchWatchLists();
   }, [])
 
-  const onSearchChange = (input) => {
-    fetchWatchlists({ q: input })
-  }
-
-  const addMovie = async (watchlistId, movie) => {
-    try {
-      const { data } = await api.addMovie(watchlistId, movie);
-
-      return data;
-    } catch(error) {
-      console.error(error);
-    }
-  }
-
-  const getMovies = (watchlistId, options = {}) => {
-    const { random, ...params } = options;
-
-    if (random) {
-      return api.getRandomMovies(watchlistId, { limit: options.limit });
-    }
-
-    return api.getMoviesOnWatchist(watchlistId, params);
-  }
-
-  const onSeeMovies = async (watchlistId, options) => {
-    try {
-      const { data } = await getMovies(watchlistId, options);
-
-      return data;
-    } catch(error) {
-      console.error(error);
-    }
-  }
-
-  const markMovieAsWatched = async (watchlistId, movieId, watched) => {
-    const updateWatchStatus = watched ? api.markMovieAsNotWatched : api.markMovieAsWatched;
-
-    try {
-
-      const { data } = updateWatchStatus(watchlistId, movieId);
-
-      return data;
-    } catch(error) {
-      console.error(error);
-    }
+  const onSearchChange = (value) => {
+    fetchWatchLists({ q: value })
   }
 
   return (
-    <Container>
-      <Row>
-        <Col className='col-sm' >
-          <SearchField
-            placeholder='Search...'
-            onChange={onSearchChange}
-          />
-        </Col>
-      </Row>
-      {showCard && cards(watchlists, addMovie, onSeeMovies, markMovieAsWatched)}
-      <Menu onCreateWatchlist={createWatchlist}/>
-    </Container>
+    <>
+      <Search onChange={onSearchChange} onClick={onSearchChange} onPlusClick={() => setShowAddWatchList(true)} />
+      <div className='watchList-cards'>
+        {
+          watchLists.map((item, index) => {
+            return (
+              <WatchListCard
+                id={item.id}
+                name={item.name}
+                description={item.description}
+                type={item.type}
+                key={index}
+                index={index}
+                numberOfFilms={item.numberOfFilms}
+              />
+            );
+          })
+        }
+      </div>
+      <AddWatchListModal
+        show={showAddWatchList}
+        onCreateWatchList={createWatchList}
+        onHide={() => setShowAddWatchList(!showAddWatchList)}
+      />
+    </>
   )
 }
 
-function cards(watchlists, onAddMovie, onSeeMovies, markMovieAsWatched) {
-  return chunk(watchlists, 3)
-    .map((items) => {
-      return (
-        <Row>
-          <Col className='col-sm' >
-            <WatchlistCard
-              id={items[0].id}
-              name={items[0].name}
-              description={items[0].description}
-              type={items[0].type}
-              numberOfFilms={items[0].numberOfFilms}
-              onAddMovie={(movie) => onAddMovie(items[0].id, movie)}
-              onSeeMovies={(options) => onSeeMovies(items[0].id, options)}
-              onMarkMovieAsWatched={
-                (movieId, watched) => markMovieAsWatched(items[0].id, movieId, watched)
-              }
-            />
-          </Col>
-          <Col className='col-sm' >
-            { !!items[1] && (
-              <WatchlistCard
-                id={items[1].id}
-                name={items[1].name}
-                description={items[1].description}
-                type={items[1].type}
-                numberOfFilms={items[1].numberOfFilms}
-                onAddMovie={(movie) => onAddMovie(items[1].id, movie)}
-                onSeeMovies={(options) => onSeeMovies(items[1].id, options)}
-                onMarkMovieAsWatched={
-                  (movieId, watched) => markMovieAsWatched(items[1].id, movieId, watched)
-                }
-              />
-            )}
-          </Col>
-          <Col className='col-sm' >
-            { !!items[2] && (
-              <WatchlistCard
-                id={items[2].id}
-                name={items[2].name}
-                description={items[2].description}
-                type={items[2].type}
-                numberOfFilms={items[2].numberOfFilms}
-                onAddMovie={(movie) => onAddMovie(items[2].id, movie)}
-                onSeeMovies={(options) => onSeeMovies(items[2].id, options)}
-                onMarkMovieAsWatched={
-                  (movieId, watched) => markMovieAsWatched(items[2].id, movieId, watched)
-                }
-              />
-            )}
-          </Col>
-        </Row>
-      )
-    })
-}
-
-export default Watchlists
+export default WatchLists

@@ -1,0 +1,15 @@
+.add-film {
+  align-items: flex-end;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  gap: 1rem;
+}
+
+li:hover {
+  background-color: rgb(185, 182, 182);
+  cursor: pointer;
+}

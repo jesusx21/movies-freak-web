@@ -1,10 +1,10 @@
 import React, { createRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import AddItemModal from './AddItemModal';
+import AddItemModal from '../AddItemModal/AddItemModal';
 import { Col, Form, Row } from 'react-bootstrap';
 
-function AddWatchlistModal(props) {
+function AddWatchListModal(props) {
   const { show, onHide } = props;
 
   const [name, setName] = useState('');
@@ -15,8 +15,8 @@ function AddWatchlistModal(props) {
   const typeRef = createRef();
   const descriptionRef = createRef();
 
-  const onCreateWatchlist = async () => {
-    await props.onCreateWatchlist({ name, description, type });
+  const onCreateWatchList = async () => {
+    await props.onCreateWatchList({ name, description, type });
 
     onHide();
   }
@@ -25,7 +25,7 @@ function AddWatchlistModal(props) {
     <AddItemModal
       show={show}
       onHide={onHide}
-      onCreate={onCreateWatchlist}
+      onCreate={onCreateWatchList}
       title='Agregar Lista'
     >
       <Form>
@@ -69,15 +69,15 @@ function AddWatchlistModal(props) {
   )
 }
 
-AddWatchlistModal.defaultProps = {
+AddWatchListModal.defaultProps = {
   show: false,
   onHide: () => console.log('Hidden'),
 };
 
-AddWatchlistModal.propTypes = {
+AddWatchListModal.propTypes = {
   show: PropTypes.bool,
   onHide: PropTypes.func,
-  onCreateWatchlist: PropTypes.func
+  onCreateWatchList: PropTypes.func
 };
 
-export default AddWatchlistModal
+export default AddWatchListModal

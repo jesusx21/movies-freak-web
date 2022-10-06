@@ -1,3 +1,4 @@
 export { default as Home } from './Home';
-export { default as Movies } from './Movies';
-export { default as Watchlists } from './Watchlists';
+export { default as Films } from './Films';
+export { default as WatchLists } from './WatchLists';
+export { default as WatchListDetail } from './WatchListDetail';
