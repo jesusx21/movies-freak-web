@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Breadcrumb } from 'react-bootstrap';
 import { useMatch, useResolvedPath, useLocation } from 'react-router-dom';
 
 import * as api from './api';
+import SessionContext from '../../context';
 
 const WATCH_LIST_ROUTES = {
   '/watch-lists': 'Watch List'
@@ -18,6 +19,12 @@ function Breadcrumbs() {
   const [, setResource] = useState();
   const [, resourceName, resourceId] = location.pathname.split('/');
 
+  const session = useContext(SessionContext);
+
+  const getShowOnRoutes = () => [
+    ...Object.keys(FILMS_ROUTES),
+    ...Object.keys(WATCH_LIST_ROUTES)
+  ];
 
   const fetchWatchList = async () => {
     if (!resourceId || WATCH_LIST_ROUTES.length > 2) {
@@ -42,14 +49,14 @@ function Breadcrumbs() {
     }
   }, []);
 
-  if (location.pathname === '/') {
+  if (!getShowOnRoutes().includes(location.pathname)) {
     return (<></>);
   }
 
   const routes = location.pathname.includes('films') ? FILMS_ROUTES : WATCH_LIST_ROUTES;
 
   return (
-    <Breadcrumb>
+    <Breadcrumb hidden={!session}>
       {
         Object.keys(routes).map((route, index) => {
           return (

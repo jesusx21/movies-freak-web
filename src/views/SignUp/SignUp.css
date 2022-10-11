@@ -1,0 +1,28 @@
+.sign-up-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 15%;
+  margin-bottom: 15%;
+}
+
+.sign-up-buttons {
+  display: flex;
+  justify-content: right;
+}
+
+body {
+  background-image: url('https://www.tuhocielts.vn/wp-content/uploads/2020/08/faverate-film.png');
+}
+
+.row {
+  margin-top: .5rem;
+}
+
+.invalid {
+  border-color: red;
+}
+
+.password-validation{
+  font-size: x-small;
+}

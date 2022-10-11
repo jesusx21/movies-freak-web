@@ -1,19 +1,21 @@
 import React from 'react';
+import {Navigate} from 'react-router-dom';
 
-import { WithoutSessionCard } from '../components';
 import Session from '../models/Session';
 import User from '../models/User';
 
-function Home() {
+function SignOut() {
   const session = Session.get();
   const user = User.get();
 
+  session.remove();
+  user.remove();
+
   return (
     <>
-      <WithoutSessionCard show={!session}/>
-      <h1 hidden={!session}>Bienvenido {user?.name}!</h1>
+      <Navigate to='/' />
     </>
   );
 }
 
-export default Home;
+export default SignOut;

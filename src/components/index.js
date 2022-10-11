@@ -9,3 +9,4 @@ export { default as Navbar } from './Navbar/Navbar';
 export { default as Search } from './Search/Search';
 export { default as StreamingLocation } from './StreamingLocation/StreamingLocation';
 export { default as WatchListCard } from './WatchListCard/WatchListCard';
+export { default as WithoutSessionCard } from './WithoutSessionCard/WithoutSessionCard'

@@ -4,9 +4,7 @@ import { Films as FilmsCards } from '../views';
 
 function Films() {
   return (
-    <div className='films'>
-      <FilmsCards />
-    </div>
+    <FilmsCards />
   );
 }
 
