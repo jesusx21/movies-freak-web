@@ -1,6 +1,6 @@
 import React, { createRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import classnames from 'classnames';
+import { useNavigate } from 'react-router-dom';
 import { Button, Col, Form, Card, Row } from 'react-bootstrap';
 
 import * as api from './api';
@@ -8,8 +8,7 @@ import './SignUp.css';
 import { notifyError, notifySuccess } from '../../toast';
 import User from '../../models/User';
 import Session from '../../models/Session';
-
-const USERNAME_ALREADY_REGISTERED = 'USERNAME_ALREADY_REGISTERED';
+import PasswordButton from '../../components/PasswordButton/PasswordButton';
 
 function SignUp() {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -101,14 +100,14 @@ function SignUp() {
 
   const onChangePassword = (input) => {
     const passwordValue = input.target.value;
-    
+
     setPassword(passwordValue);
     setIsPasswordValid(!!passwordRegex.exec(passwordValue))
   }
 
   const onChangeEmail = (input) => {
     const emailValue = input.target.value;
-    
+
     setEmail(emailValue);
     setIsEmailValid(!!emailRegex.exec(emailValue))
   }
@@ -185,14 +184,22 @@ function SignUp() {
             <Row>
               <Form.Group as={Col} controlId='password'>
                 <Form.Label>Password</Form.Label>
-                <Form.Control
+                {/* <PasswordButton
                   ref={passwordRef}
-                  type='password'
                   onChange={onChangePassword}
                   className={passwordClassNames}
                   onClick={() => setShowToolTip(!showToolTip)}
-                  placeholder='Password'
-                />
+                /> */}
+                <div className='password'>
+                  <Form.Control
+                    ref={passwordRef}
+                    type='password'
+                    onChange={onChangePassword}
+                    className={passwordClassNames}
+                    onClick={() => setShowToolTip(!showToolTip)}
+                    placeholder='Password'
+                  />
+                </div>
                 <span className='password-validation'>
                       Your password must be 6-24 characters long, contain at least
                       one letter upper case and one letter lower case and numbers,
@@ -221,7 +228,13 @@ function SignUp() {
               />
             </Form.Group>
             <div className='sign-up-buttons'>
-              <Button variant='success' disabled={!enableSignUpButton()} onClick={onSuccessClick}>Sign Up</Button>
+              <Button
+                variant='success'
+                disabled={!enableSignUpButton()}
+                onClick={onSuccessClick}
+              >
+                Sign Up
+              </Button>
               <Button variant='outline-secondary' href='/'>Cancelar</Button>
             </div>
           </Form>

@@ -1,0 +1,19 @@
+.sign-in-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 7%;
+  margin-bottom: 7%;
+}
+
+.sign-in-button {
+  margin-top: .50rem;
+  display: flex;
+  justify-content: center;
+}
+
+.create-account-legend {
+  margin-top: .50rem;
+  text-align: center;
+  font-size: x-small;
+}

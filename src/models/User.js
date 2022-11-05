@@ -7,10 +7,6 @@ export default class User {
     this.birthdate = birthdate;
   }
 
-  remove() {
-    localStorage.removeItem('user');
-  }
-
   save() {
     localStorage.setItem('user', JSON.stringify(this));
   }
@@ -24,5 +20,9 @@ export default class User {
 
 
     return new User(JSON.parse(result));
+  }
+
+  static remove() {
+    localStorage.removeItem('user');
   }
 }

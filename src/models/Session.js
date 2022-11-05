@@ -6,10 +6,6 @@ export default class Session {
     this.user = user
   }
 
-  remove() {
-    localStorage.removeItem('session');
-  }
-
   save() {
     localStorage.setItem('session', JSON.stringify(this));
   }
@@ -23,5 +19,9 @@ export default class Session {
 
 
     return new Session(JSON.parse(result));
+  }
+
+  static remove() {
+    localStorage.removeItem('session');
   }
 }

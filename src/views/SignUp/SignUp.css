@@ -2,8 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 15%;
-  margin-bottom: 15%;
+  margin: 2% 22% 2% 22%;
+  /* margin-top: 15%;
+  margin-bottom: 15%; */
 }
 
 .sign-up-buttons {
@@ -25,4 +26,8 @@ body {
 
 .password-validation{
   font-size: x-small;
+}
+
+.password {
+  display: flex;
 }

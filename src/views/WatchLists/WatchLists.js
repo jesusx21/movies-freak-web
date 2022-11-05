@@ -5,13 +5,15 @@ import { AddWatchListModal, Search, WatchListCard } from '../../components';
 import { notifyError } from '../../toast';
 import './WatchLists.css';
 
-function WatchLists() {
+function WatchLists(props) {
+  const { session } = props;
+
   const [watchLists, setWatchLists] = useState([]);
   const [showAddWatchList, setShowAddWatchList] = useState(false);
 
   const createWatchList = async (watchList) => {
     try {
-      const { data } = await api.createWatchList(watchList)
+      const { data } = await api.createWatchList(watchList, session)
 
       setWatchLists([...watchLists, data]);
     } catch(error) {
@@ -21,7 +23,7 @@ function WatchLists() {
 
   const fetchWatchLists = async (query = {}) => {
     try {
-      const { data: items } = await api.getWatchLists(query);
+      const { data: items } = await api.getWatchLists(query, session, session);
 
       setWatchLists(items)
     } catch (error) {

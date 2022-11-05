@@ -10,7 +10,7 @@ function WatchLists() {
   return (
     <>
       <WithoutSessionCard show={!session}/>
-      <div hidden={!session}><WatchListsCards /></div>
+      <div hidden={!session}><WatchListsCards session={session}/></div>
     </>
   );
 }

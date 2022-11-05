@@ -15,6 +15,11 @@ export const SidebarData = [
     className: 'nav-text'
   },
   {
+    title: 'TV Shows',
+    path: '/tv-shows',
+    className: 'nav-text'
+  },
+  {
     title: 'About',
     path: '/about',
     className: 'nav-text'

@@ -16,7 +16,9 @@ import {
 import './WatchList.css';
 
 
-function WatchList() {
+function WatchList(props) {
+  const { session } = props;
+
   const params = useParams();
   const [watchList, setWatchList] = useState({})
   const [query, setQuery] = useState('');
@@ -34,11 +36,11 @@ function WatchList() {
 
   const fetchWatchList = async () => {
     try {
-      const { data } = await api.getWatchListById(params.id);
+      const { data } = await api.getWatchListById(params.id, session);
 
       setWatchList(data);
     } catch (error) {
-      const {data } = error.response;
+      const { data } = error.response;
 
       if (data.code === 'LIST_NOT_FOUND') {
         return notifyError('Watch list was not found.')
@@ -50,7 +52,7 @@ function WatchList() {
 
   const fetchFilms = async (query) => {
     try {
-      const { items, totalItems } = await api.getFilms(params.id, query);
+      const { items, totalItems } = await api.getFilms(params.id, query, session);
 
       setFilms(items)
       setTotalFilms(totalItems)
@@ -65,7 +67,7 @@ function WatchList() {
 
   const fetchRandomFilms = async () => {
     try {
-      const { data } = await api.getRandomFilms(params.id, { random: true, limit: 3 });
+      const { data } = await api.getRandomFilms(params.id, { random: true, limit: 3 }, session);
 
       setRandomFilms(data)
     } catch (error) {
@@ -75,7 +77,7 @@ function WatchList() {
 
   const onAddFilm = async (film) => {
     try {
-      const { data } = await api.addFilm(params.id, film);
+      const { data } = await api.addFilm(params.id, film, session);
 
       setFilms([ data, ...films ])
 
@@ -90,7 +92,7 @@ function WatchList() {
     const query = { name: value };
 
     try {
-      const { data } = await api.fetchFilmOnIMDB(query);
+      const { data } = await api.fetchFilmOnIMDB(query, session);
 
       return data;
     } catch(error) {
@@ -105,7 +107,7 @@ function WatchList() {
     }
 
     try {
-      const { data } = await api.addFilmsFromWatchList(params.id, watchListId);
+      const { data } = await api.addFilmsFromWatchList(params.id, watchListId, session);
 
       setFilms([ ...films, ...data ])
       return data;
@@ -118,7 +120,7 @@ function WatchList() {
     const updateWatchStatus = watched ? api.markFilmAsNotWatched : api.markFilmAsWatched;
 
     try {
-      const { data } = updateWatchStatus(params.id, filmId);
+      const { data } = updateWatchStatus(params.id, filmId, session);
 
       return data;
     } catch(error) {

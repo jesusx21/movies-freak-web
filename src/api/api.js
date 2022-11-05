@@ -6,20 +6,24 @@ class Api {
   constructor(host, port) {
     const baseURL = `http://${host}:${port}/movies-freak/api/v1`;
 
-    this._request = axios.create({
-      baseURL,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    this._headers = { 'Content-Type': 'application/json' };
+    this._request = axios.create({ baseURL });
+  }
+
+  setSession(session) {
+    this._session = session
   }
 
   get(endpoint, params) {
-    return this._request.get(endpoint, { params });
+    const headers = { ...this._headers, Authorization: `Bearer ${this._session.token}` };
+
+    return this._request.get(endpoint, { params, headers });
   }
 
   post(endpoint, payload) {
-    return this._request.post(endpoint, payload);
+    const headers = { ...this._headers, Authorization: `Bearer ${this._session.token}` };
+
+    return this._request.post(endpoint, payload, headers);
   }
 }
 

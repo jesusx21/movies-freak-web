@@ -13,7 +13,7 @@ function Films() {
 
   const fetchFilms = async (query = {}) => {
     try {
-      const {items, totalItems } = await api.getFilms(query);
+      const { items, totalItems } = await api.getFilms(query);
 
       setFilms(items);
       setTotalFilms(totalItems);

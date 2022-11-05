@@ -1,15 +1,12 @@
 import React from 'react';
-import {Navigate} from 'react-router-dom';
 
-import Session from '../models/Session';
-import User from '../models/User';
+import { SignIn as Login } from '../views';
 
 function SignIn() {
-
   return (
-    <div>
-      Inicia Sesión
-    </div>
+    <>
+      <Login />
+    </>
   );
 }
 

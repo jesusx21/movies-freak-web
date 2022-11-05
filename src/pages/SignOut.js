@@ -5,11 +5,8 @@ import Session from '../models/Session';
 import User from '../models/User';
 
 function SignOut() {
-  const session = Session.get();
-  const user = User.get();
-
-  session.remove();
-  user.remove();
+  Session.remove();
+  User.remove();
 
   return (
     <>
