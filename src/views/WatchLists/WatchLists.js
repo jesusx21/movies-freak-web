@@ -13,7 +13,7 @@ function WatchLists(props) {
 
   const createWatchList = async (watchList) => {
     try {
-      const { data } = await api.createWatchList(watchList, session)
+      const { data } = await api.createWatchList(watchList, session);
 
       setWatchLists([...watchLists, data]);
     } catch(error) {
@@ -23,7 +23,7 @@ function WatchLists(props) {
 
   const fetchWatchLists = async (query = {}) => {
     try {
-      const { data: items } = await api.getWatchLists(query, session, session);
+      const { data: items } = await api.getWatchLists(query, session);
 
       setWatchLists(items)
     } catch (error) {
@@ -33,7 +33,7 @@ function WatchLists(props) {
 
   useEffect(() => {
     fetchWatchLists();
-  }, [])
+  });
 
   const onSearchChange = (value) => {
     fetchWatchLists({ q: value })
@@ -41,7 +41,11 @@ function WatchLists(props) {
 
   return (
     <>
-      <Search onChange={onSearchChange} onClick={onSearchChange} onPlusClick={() => setShowAddWatchList(true)} />
+      <Search
+        onChange={onSearchChange}
+        onClick={onSearchChange}
+        onPlusClick={() => setShowAddWatchList(true)}
+      />
       <div className='watchList-cards'>
         {
           watchLists.map((item, index) => {

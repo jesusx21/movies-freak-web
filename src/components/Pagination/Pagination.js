@@ -7,7 +7,7 @@ import { range } from 'lodash';
 
 function MoviesFreakPagination(props) {
   const { totalItems, perPage } = props;
-  const numberOfPages = Math.ceil(totalItems / perPage)
+  const numberOfPages = props.numberOfPages || Math.ceil(totalItems / perPage)
   const [currentPage, setCurrentPage] = useState(1);
   const [startAt, setStartAt] = useState(1);
 
@@ -37,6 +37,7 @@ function MoviesFreakPagination(props) {
     setCurrentPage(page);
 
     props.onPageClick({
+      page,
       limit: perPage,
       skip: (perPage * (page - 1))
     })

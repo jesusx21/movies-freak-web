@@ -1,6 +1,9 @@
 export { default as Home } from './Home';
 export { default as Films } from './Films';
+export { default as TVSeasons } from './TVSeasons';
 export { default as TVShows } from './TVShows';
+export { default as SignIn } from './SignIn';
+export { default as SignOut } from './SignOut';
 export { default as SignUp } from './SignUp';
 export { default as WatchLists } from './WatchLists';
 export { default as WatchListDetail } from './WatchListDetail';

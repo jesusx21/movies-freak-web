@@ -2,10 +2,18 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { Films, Home, SignUp, TVShows, WatchListDetail, WatchLists } from './pages';
 import { Breadcrumbs, Navbar } from './components';
-import SignIn from './pages/SignIn';
-import SignOut from './pages/SignOut';
+import {
+  Films,
+  Home,
+  SignIn,
+  SignOut,
+  SignUp,
+  TVSeasons,
+  TVShows,
+  WatchListDetail,
+  WatchLists
+} from './pages';
 
 function App() {
   return (
@@ -19,6 +27,7 @@ function App() {
           <Route path='/' exact element={<Home />} />
           <Route path='/films' exact element={<Films />} />
           <Route path='/tv-shows' exact element={<TVShows />} />
+          <Route path='/tv-shows/:tvShowId' exact element={<TVSeasons />} />
           <Route path='/sign-in' exact element={<SignIn />} />
           <Route path='/sign-out' exact element={<SignOut />} />
           <Route path='/sign-up' exact element={<SignUp />} />
@@ -30,4 +39,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

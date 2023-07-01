@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Session from '../models/Session';
 import { WithoutSessionCard } from '../components';
 import { WatchLists as WatchListsCards } from '../views';
-import Session from '../models/Session';
 
 function WatchLists() {
   const session = Session.get();

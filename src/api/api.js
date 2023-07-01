@@ -15,15 +15,25 @@ class Api {
   }
 
   get(endpoint, params) {
-    const headers = { ...this._headers, Authorization: `Bearer ${this._session.token}` };
+    const headers = this._getHeaders();
 
     return this._request.get(endpoint, { params, headers });
   }
 
   post(endpoint, payload) {
-    const headers = { ...this._headers, Authorization: `Bearer ${this._session.token}` };
+    const headers = this._getHeaders();
 
-    return this._request.post(endpoint, payload, headers);
+    return this._request.post(endpoint, payload, { headers });
+  }
+
+  _getHeaders() {
+    const headers = { ...this._headers };
+
+    if (this._session) {
+      headers.Authorization = `Bearer ${this._session.token}`;
+    }
+
+    return headers;
   }
 }
 
