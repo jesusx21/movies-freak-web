@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../config';
 
-class Api {
+export default class Api {
   constructor(host, port) {
     const baseURL = `http://${host}:${port}/movies-freak/api/v1/`;
 
@@ -22,4 +22,4 @@ class Api {
   }
 }
 
-export default new Api(config.serverHost, config.serverPort);
+// export default new Api(config.serverHost, config.serverPort);

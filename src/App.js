@@ -5,7 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
 import Watchlists from './pages/Watchlists';
 import Films from './pages/Films';
-import TVShows from './pages/TVShows';
+import TVSeries from './pages/TVSeries';
 import About from './pages/About';
 
 import './style.css'
@@ -20,7 +20,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/watchlists' element={<Watchlists />} />
           <Route path='/films' element={<Films />} />
-          <Route path='/tv-shows' element={<TVShows />} />
+          <Route path='/tv-shows' element={<TVSeries />} />
           <Route path='/about' element={<About />} />
         </Routes>
       </div>
